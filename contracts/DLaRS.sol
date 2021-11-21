@@ -28,16 +28,16 @@ contract DLars{
     
     mapping(uint => address) Bidder;
     
-    function addBidders(){
+    function addBidders() public {
         // regester new bidder to bidder mapping
     }
     
-    function registerLand(){
+    function registerLand() public {
         // Add a new entry in Land mapping with a new id
         // Status of the land will be registered
     }
     
-    function putUpForAuction(){
+    function putUpForAuction() public {
         // Params: LandId, 
         // Changes land status to underBidding and land is up for auction.
         // Add entry in auction
@@ -45,13 +45,13 @@ contract DLars{
         
     }
     
-    function viewLandForAuctions(){
+    function viewLandForAuctions() public {
         // params: 
         // Accessed by bidder
         // Lists out land details which are under bidding
     }
     
-    function payable placeBid(){
+    function payable placeBid() public {
         // accessible by bidders only
         // params: pass auction Id and 
         // check current bid> last bid, pay amount, update highest bid, 
@@ -59,30 +59,30 @@ contract DLars{
         
     }
     
-    function viewHighestBid(){
+    function viewHighestBid() public {
         // params: auction Id
         // accessed by seller
         // returns highest bid value for the current land
     }
     
-    function terminateAuction(){
+    function terminateAuction() public {
         // accessed by owner/highest bidder, accessible only after 30 days of auction start, 
         // change status of land to sold, change owner address, pay money to previous owner
     }
     
-    function acceptBid(){
+    function acceptBid() public {
         // prompts auction contract to stop bidding and complete transaction 
         // (auction will take care of guarantee that money will be transferred), 
         // will internally call the transfer ownership function
         
     }
     
-    function removeCompletedAuction(){
+    function removeCompletedAuction() public {
         // params: auctionId
         // Remove auction from auctions mapping
     }
     
-    function transferOwnership(){
+    function transferOwnership() public {
         // params: landId, auctionId
         // change owner and remove from auction 
         // change land status to sold
