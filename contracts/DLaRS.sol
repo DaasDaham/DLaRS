@@ -21,12 +21,19 @@ contract DLars{
     mapping(uint => auction) Auction;
     
     struct auction {
-	    address highestBidder ;
+	    address highestBidder;
 	    uint highestBid;
 	    uint landUnderBid;
     }
     
     mapping(uint => address) Bidder;
+    
+    constructor() public{
+        uint bidderCount = 0;
+        uint landCount = 0;
+        uint auctionCount = 0;
+        owner = msg.sender;
+    }
     
     function addBidders() public {
         // regester new bidder to bidder mapping
@@ -42,11 +49,10 @@ contract DLars{
         // Changes land status to underBidding and land is up for auction.
         // Add entry in auction
         // Returns auction Id (for seller)
-        
     }
     
     function viewLandForAuctions() public {
-        // params: 
+        // params 
         // Accessed by bidder
         // Lists out land details which are under bidding
     }
@@ -55,8 +61,7 @@ contract DLars{
         // accessible by bidders only
         // params: pass auction Id and 
         // check current bid> last bid, pay amount, update highest bid, 
-        // check if there was a last bidder, if yes revert amount of last bidder
-        
+        // check if there was a last bidder, if yes revert amount of last bidder    
     }
     
     function viewHighestBid() public {
@@ -66,7 +71,7 @@ contract DLars{
     }
     
     function terminateAuction() public {
-        // accessed by owner/highest bidder, accessible only after 30 days of auction start, 
+        // accessed by highest bidder, accessible only after 30 days of auction start, 
         // change status of land to sold, change owner address, pay money to previous owner
     }
     
@@ -77,12 +82,12 @@ contract DLars{
         
     }
     
-    function removeCompletedAuction() public {
+    function removeCompletedAuction() private {
         // params: auctionId
         // Remove auction from auctions mapping
     }
     
-    function transferOwnership() public {
+    function transferOwnership() private {
         // params: landId, auctionId
         // change owner and remove from auction 
         // change land status to sold
