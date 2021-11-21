@@ -8,23 +8,23 @@ contract DLars{
         string landAdress;
         string pinCode;
         address payable currentOwner;
-        uint sellingPrice;
+        uint askingPrice;
         LandStatus status; // 
+        uint auctionId;
     }
     
     enum LandStatus {underBidding, registered, sold}
     
-    mapping(uint => landDetails) Land;
+    mapping(uint => landDetails) Lands;
     // Land[] lands;
     
     address owner; // check how multiple owners can be on the blockchain
     
     mapping(uint => auction) Auction;
-    
+    //landID and AuctinoID are same
     struct auction {
 	    address highestBidder;
 	    uint highestBid;
-	    uint landUnderBid;
     }
     
     mapping(uint => address) Bidder;
@@ -39,29 +39,30 @@ contract DLars{
     function addBidders() public {
         // regester new bidder to bidder mapping
     }
-    function computeID(){
-        
+    function computeIDLand(string memory landAddress, string memory city,string memory pincode) private view returns(uint){
+        return uint(keccak256(block.difficulty,now, landAddress, city, pincode))%1000000000;
     }
     function registerLand(string memory landAddress, string memory city, string memory country, 
-    string memory pincode, address payable currentOwner, uint sellingPrice) public {
+    string memory pincode, address payable currentOwner, uint askingPrice) public {
         // Add a new entry in Land mapping with a new id
         // Status of the land will be registered
         // lands.push(Land(landAddress, city, state, pincode, currentOwner, sellingPrice, LandStatus.registered))
-        
-        Land[landCount].city = city;
-        Land[landCount].state = state;
-        Land[landCount].pincode = pincode;
-        Land[landCount].currentOwner = currentOwner;
-        Land[landCount].sellingPrice = sellingPrice;
-        Land[landCount].status = LandStatus.registered;
-        landCount++;
+        uint landID = computeId(landAddress, city, pincode);
+        Lands[landID].city = city;
+        Lands[landID].state = state;
+        Lands[landID].pincode = pincode;
+        Lands[landID].currentOwner = currentOwner;
+        Lands[landID].askingPrice = askingPrice;
+        Lands[landID].status = LandStatus.registered;
     }
     
-    function putUpForAuction() public {
-        // Params: LandId, 
+    function putUpForAuction(uint landId) public {
+        // Params: LandId 
         // Changes land status to underBidding and land is up for auction.
         // Add entry in auction
-        // Returns auction Id (for seller)
+        require(Lands[landId].status == LandStatus.registered);
+        Auction[landId].highestBid = 0;
+        land[landId].status = LandStatus.underBidding;
     }
     
     // function viewLandForAuctions() public {
@@ -73,14 +74,16 @@ contract DLars{
     function payable placeBid() public {
         // accessible by bidders only
         // params: pass auction Id and 
-        // check current bid> last bid, pay amount, update highest bid, 
+        // check current bid > last bid, pay amount, update highest bid, 
         // check if there was a last bidder, if yes revert amount of last bidder    
     }
     
-    function viewHighestBid() public {
+    function viewHighestBid(uint landId) public {
         // params: auction Id
         // accessed by seller
         // returns highest bid value for the current land
+        require(Lands[landId].status == LandStatus.underBidding);
+        return Auction[landId].highestBid;
     }
     
     function terminateAuction() public {
@@ -96,8 +99,11 @@ contract DLars{
     }
     
     function removeCompletedAuction() private {
-        // params: auctionId
+        // params: LandID
         // Remove auction from auctions mapping
+        require(Lands[landId].status == LandStatus.underBidding);
+        Lands[landId].status == LandStatus.sold;
+
     }
     
     function transferOwnership() private {
