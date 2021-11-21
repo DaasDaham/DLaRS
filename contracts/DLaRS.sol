@@ -13,13 +13,20 @@ contract DLars{
         uint auctionId;
     }
     
-    enum LandStatus {underBidding, registered, sold}
+    enum LandStatus {underBidding, registered}
     
     mapping(uint => landDetails) Lands;
     // Land[] lands;
     
-    address owner; // check how multiple owners can be on the blockchain
-    
+    address manager; // check how multiple owners can be on the blockchain
+    modifier onlyManager{
+        require(msg.sender == manager);
+        _;
+    }
+    modifier onlyOwner(uint landId){
+        require(msg.sender == Lands[landId].currentOwner);
+        _;
+    }
     mapping(uint => auction) Auction;
     //landID and AuctinoID are same
     struct auction {
@@ -27,23 +34,20 @@ contract DLars{
 	    uint highestBid;
     }
     
-    mapping(uint => address) Bidder;
+    // mapping(uint => address) Bidder;
     
     constructor() public{
-        uint bidderCount = 0;
-        uint landCount = 0;
-        uint auctionCount = 0;
-        owner = msg.sender;
+        manager = msg.sender;
     }
 
-    function addBidders() public {
-        // regester new bidder to bidder mapping
-    }
+    // function addBidders() public {
+    //     // regester new bidder to bidder mapping
+    // }
     function computeIDLand(string memory landAddress, string memory city,string memory pincode) private view returns(uint){
         return uint(keccak256(block.difficulty,now, landAddress, city, pincode))%1000000000;
     }
     function registerLand(string memory landAddress, string memory city, string memory country, 
-    string memory pincode, address payable currentOwner, uint askingPrice) public {
+    string memory pincode, address payable currentOwner, uint askingPrice) public onlyManager{
         // Add a new entry in Land mapping with a new id
         // Status of the land will be registered
         // lands.push(Land(landAddress, city, state, pincode, currentOwner, sellingPrice, LandStatus.registered))
@@ -56,7 +60,7 @@ contract DLars{
         Lands[landID].status = LandStatus.registered;
     }
     
-    function putUpForAuction(uint landId) public {
+    function putUpForAuction(uint landId) public onlyOwner(landId){
         // Params: LandId 
         // Changes land status to underBidding and land is up for auction.
         // Add entry in auction
@@ -77,39 +81,39 @@ contract DLars{
         // check current bid > last bid, pay amount, update highest bid, 
         // check if there was a last bidder, if yes revert amount of last bidder    
     }
-    
-    function viewHighestBid(uint landId) public {
+
+    function viewHighestBid(uint landId) public onlyOwner(landId){
         // params: auction Id
         // accessed by seller
         // returns highest bid value for the current land
         require(Lands[landId].status == LandStatus.underBidding);
         return Auction[landId].highestBid;
     }
-    
     function terminateAuction() public {
-        // accessed by highest bidder, accessible only after 30 days of auction start, 
+        // accessed by highest bidder, accessible only after 30 days of auction start 
         // change status of land to sold, change owner address, pay money to previous owner
-    }
-    
-    function acceptBid() public {
-        // prompts auction contract to stop bidding and complete transaction 
-        // (auction will take care of guarantee that money will be transferred), 
-        // will internally call the transfer ownership function
         
     }
-    
-    function removeCompletedAuction() private {
-        // params: LandID
-        // Remove auction from auctions mapping
+    function acceptHighestBid(uint landId) public onlyOwner(landId){
+        // prompts auction contract to stop bidding and complete transaction 
+        // (auction will take care of guarantee that money will be transferred), 
+        // will internally call the transfer ownership function        
         require(Lands[landId].status == LandStatus.underBidding);
-        Lands[landId].status == LandStatus.sold;
-
+        require(Auction[landId].highestBid >= Lands[landId].askingPrice);
+        transferOwnership(landId, Auction[landId].highestBidder);  
+        Lands[landId].status == LandStatus.registered;     
     }
-    
-    function transferOwnership() private {
-        // params: landId, auctionId
+    // function removeCompletedAuction() private {
+    //     // params: LandID
+    //     // Remove auction from auctions mapping
+
+    // }
+    function transferOwnership(uint landId, address newOwnerId) private onlyOwner(landId){
+        // params: landId, newOwnerId
         // change owner and remove from auction 
         // change land status to sold
+        require(Lands[landId].owner != newOwnerId);
+        Lands[landId].owner = newOwnerId;
+        
     }
-    
 }
