@@ -15,6 +15,7 @@ contract DLars{
     enum LandStatus {underBidding, registered, sold}
     
     mapping(uint => landDetails) Land;
+    // Land[] lands;
     
     address owner; // check how multiple owners can be on the blockchain
     
@@ -34,14 +35,26 @@ contract DLars{
         uint auctionCount = 0;
         owner = msg.sender;
     }
-    
+
     function addBidders() public {
         // regester new bidder to bidder mapping
     }
-    
-    function registerLand() public {
+    function computeID(){
+        
+    }
+    function registerLand(string memory landAddress, string memory city, string memory country, 
+    string memory pincode, address payable currentOwner, uint sellingPrice) public {
         // Add a new entry in Land mapping with a new id
         // Status of the land will be registered
+        // lands.push(Land(landAddress, city, state, pincode, currentOwner, sellingPrice, LandStatus.registered))
+        
+        Land[landCount].city = city;
+        Land[landCount].state = state;
+        Land[landCount].pincode = pincode;
+        Land[landCount].currentOwner = currentOwner;
+        Land[landCount].sellingPrice = sellingPrice;
+        Land[landCount].status = LandStatus.registered;
+        landCount++;
     }
     
     function putUpForAuction() public {
@@ -51,11 +64,11 @@ contract DLars{
         // Returns auction Id (for seller)
     }
     
-    function viewLandForAuctions() public {
-        // params 
-        // Accessed by bidder
-        // Lists out land details which are under bidding
-    }
+    // function viewLandForAuctions() public {
+    //     // params 
+    //     // Accessed by bidder
+    //     // Lists out land details which are under bidding
+    // }
     
     function payable placeBid() public {
         // accessible by bidders only
