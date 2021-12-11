@@ -43,7 +43,7 @@ contract DLars{
     }
     //This function registers land on DLaRS and can only be called by manager
     function registerLand(string memory landAddress, string memory city, string memory country, 
-    string memory pincode, address payable currentOwner, uint askingPrice) public onlyManager{
+    string memory pincode, address payable currentOwner, uint askingPrice) public onlyManager returns(uint256){
         // Add a new entry in Land mapping with a new id
         // Status of the land will be registered
         uint landID = computeIdLand(landAddress, city, pincode);
@@ -53,6 +53,7 @@ contract DLars{
         Lands[landID].currentOwner = currentOwner;
         Lands[landID].askingPrice = askingPrice;
         Lands[landID].status = LandStatus.registered;
+        return landID;
     }
     //This function puts up the land for auction, can only be called by the current owner    
     function putUpForAuction(uint landId) public onlyOwner(landId){
@@ -63,17 +64,23 @@ contract DLars{
         Auction[landId].highestBidTimestamp = block.timestamp;
         Lands[landId].status = LandStatus.underBidding;
     }
+
+    function placeBid(address payable _receiver, uint256 amount) public payable {
+        //PaymentReceived[_landId] = true;
+        uint256 amntToRed = msg.value - 5;
+        _receiver.transfer(amntToRed);
+    }
     
-    function placeBid(uint landId, uint currentBid) public payable{
+    /*function placeBid(uint landId, uint currentBid) public payable{
         //TO BE DONE
         require(msg.sender!=Lands[landId].currentOwner);
         require(Auction[landId].highestBid<currentBid);
         require(Lands[landId].askingPrice<currentBid);
         require(Lands[landId].status==LandStatus.underBidding);
-        if (Auction[landId].highestBid>0){
-            Auction[landId].highestBidder.transfer(Auction[landId].highestBid);
-        }
-        Lands[landId].currentOwner.transfer(currentBid-Auction[landId].highestBid);
+        //if (Auction[landId].highestBid>0){
+        //    Auction[landId].highestBidder.transfer(Auction[landId].highestBid);
+        //}
+        payable(Lands[landId].currentOwner).transfer(currentBid-Auction[landId].highestBid);
         Auction[landId].highestBidder = payable(msg.sender);
         Auction[landId].highestBid = currentBid;
         Auction[landId].highestBidTimestamp = block.timestamp;
@@ -82,7 +89,7 @@ contract DLars{
         // check current bid > last bid, pay amount, update highest bid, 
         // check if there was a last bidder, if yes revert amount of last bidder    
 
-    }
+    }*/
 
     //This function allows the current owner to view the current highest bid
     function viewHighestBid(uint landId) public onlyOwner(landId) returns(uint){
