@@ -55,7 +55,7 @@ contract DLars{
     }
     
     //This function creates a unique landId using its properties
-    function computeIdLand(string memory landAddress, string memory city,string memory country, string memory pincode) private pure returns(uint){    
+    function computeIdLand(string memory landAddress, string memory city, string memory country, string memory pincode) public pure returns(uint){    
         return uint(keccak256(abi.encodePacked(landAddress, city, country, pincode)))%1000000000;
     }
 
