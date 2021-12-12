@@ -126,7 +126,7 @@ contract DLars{
     }
 
     //This function allows the current owner to view the current highest bid
-    function viewHighestBid(uint landId) public onlyOwner(landId) view returns(uint){
+    function viewHighestBid(uint landId) public view returns(uint){
         // accessed by seller
         // returns highest bid value for the current land
         require(Lands[landId].status == LandStatus.underBidding);
