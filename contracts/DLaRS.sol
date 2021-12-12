@@ -108,7 +108,7 @@ contract DLars{
         uint currentBid = msg.value;
         require(msg.sender!=Lands[landId].currentOwner);
         require(Auction[landId].highestBid<currentBid);
-        require(Lands[landId].askingPrice<currentBid);
+        require(Lands[landId].askingPrice<=currentBid);
         require(Lands[landId].status==LandStatus.underBidding);
         if (Auction[landId].highestBid>0){
             Auction[landId].highestBidder.transfer(Auction[landId].highestBid);
