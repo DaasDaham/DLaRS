@@ -1,4 +1,4 @@
-pragma solidity 0.8.1;
+pragma solidity 0.8.10;
 // SPDX-License-Identifier: UNLICENSED
 
 contract DLars{
