@@ -33,7 +33,7 @@ const MainFunc = ({ id }) => {
       />
       <InnerForm
         inputArray={viewAuctionDetails}
-        innerText=" View Auction Details"
+        innerText="View Auction Details"
         id={id}
       />
     </Box>

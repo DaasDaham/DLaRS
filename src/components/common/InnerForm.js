@@ -10,12 +10,12 @@ import {
   viewLandDetailsHelper,
   computeIdLandHelper,
   viewAuctionDetailsHelper,
-  putForAuctionHelper, 
-  deleteFromAuctionHelper, 
-  updateAuctionDetailsHelper, 
-  acceptHighestBidHelper, 
+  putForAuctionHelper,
+  deleteFromAuctionHelper,
+  updateAuctionDetailsHelper,
+  acceptHighestBidHelper,
   terminateAuctionHelper,
-  placeBidHelper
+  placeBidHelper,
 } from "../../Web3Helpers";
 
 let isInitialized = false;
@@ -34,42 +34,65 @@ async function intialize() {
   isInitialized = true;
 }
 
-async function executionHandler(innerText, formDetails) {
+async function executionHandler(innerText, formDetails, setOutputString) {
   if (!isInitialized) {
     await intialize();
   }
+  console.log(innerText);
   switch (innerText) {
     case "Register Land":
-      await registerLandHelper(dlarsObj, accounts, formDetails);
+      //Done
+      let landId = await registerLandHelper(dlarsObj, accounts, formDetails);
+      console.log(landId + "console");
+      setOutputString([<Box>Generated Land Id : {landId} </Box>]);
       break;
     case "View Land Details":
-      await viewLandDetailsHelper(dlarsObj, accounts, formDetails);
+      //Done
+      let landDetails = await viewLandDetailsHelper(
+        dlarsObj,
+        accounts,
+        formDetails
+      );
+      console.log("land Details");
+      console.log(landDetails);
       break;
     case "Compute Id Land":
       await computeIdLandHelper(dlarsObj, accounts, formDetails);
       break;
     case "View Auction Details":
-      await viewAuctionDetailsHelper(dlarsObj, accounts, formDetails);
+      //Done
+      let aucDetails = await viewAuctionDetailsHelper(
+        dlarsObj,
+        accounts,
+        formDetails
+      );
+      console.log("AUC Details");
+      console.log(aucDetails);
       break;
     case "Put For Auction":
+      //Done
       await putForAuctionHelper(dlarsObj, accounts, formDetails);
       break;
     case "Delete From Auction":
+      // Done
       await deleteFromAuctionHelper(dlarsObj, accounts, formDetails);
       break;
     case "Update Auction Details":
       await updateAuctionDetailsHelper(dlarsObj, accounts, formDetails);
       break;
     case "Accept Highest Bid":
+      //Done
       await acceptHighestBidHelper(dlarsObj, accounts, formDetails);
       break;
     case "Terminate Auction":
       await terminateAuctionHelper(dlarsObj, accounts, formDetails);
       break;
     case "Place Bid":
+      //Done
       await placeBidHelper(dlarsObj, accounts, formDetails);
       break;
     default:
+      console.log("NONE " + innerText);
       return "None";
   }
 }
@@ -97,7 +120,7 @@ const InnerForm = ({ inputArray, innerText, id }) => {
     e.preventDefault();
     setShowOutput(true);
     intialize();
-    executionHandler(innerText, formDetails);
+    executionHandler(innerText, formDetails, setOuptutString);
     setOuptutString([<Box>id : {id} </Box>, <Box>Hello world</Box>]);
   };
 
