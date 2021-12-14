@@ -1,18 +1,12 @@
-# Getting Started with Create React App
+# Decentralized Land Registry System 
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+We build a decentralized system for land registry using Ethereum Framework and ReactJS.
 
-## Available Scripts
+The smart contracts are present in the contracts folder and need to be deployed to a Ganache workspace to work.
 
-In the project directory, you can run:
+To deploy the smart contract on Ganache, open a workspace on ganache and copy over the RPC url into truffle_config.js file.
 
-### `yarn start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+Run ### `truffle migrate --reset` 
 
 ### `yarn test`
 
