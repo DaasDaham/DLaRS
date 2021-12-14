@@ -15,7 +15,8 @@ async function registerLandHelper(dlarsObj, accounts, formDetails) {
       formDetails.pinCode,
       formDetails.payableCurrentOwner
     )
-    .call(function (result) {
+    .call({ from: accounts[0] })
+    .then(function (result) {
       landId = result;
     });
   await dlarsObj.methods
@@ -31,7 +32,7 @@ async function registerLandHelper(dlarsObj, accounts, formDetails) {
       console.log(result);
     });
   console.log("After Blockchain");
-  console.log(landRegistryStatus);
+  console.log(landId);
   return landId;
 }
 
