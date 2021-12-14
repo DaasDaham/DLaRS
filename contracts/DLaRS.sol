@@ -59,6 +59,10 @@ contract DLars{
         return uint(keccak256(abi.encodePacked(landAddress, city, country, pincode)))%1000000000;
     }
 
+    function getManagerAddress() public view returns(address){
+        return manager;
+    }
+
     //This function registers land on DLaRS and can only be called by manager
     function registerLand(string memory landAddress, string memory city, string memory country, 
     string memory pincode, address payable currentOwner) public onlyManager returns(uint256){

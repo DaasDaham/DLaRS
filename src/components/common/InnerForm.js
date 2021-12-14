@@ -3,6 +3,52 @@ import { Box, Button } from "@mui/material";
 import RootInput from "./RootInput";
 import styles from "./styles/innerForm";
 import Alert from "@mui/material/Alert";
+import Web3 from "web3";
+import { DLaRS_ABI, DLaRS_ADDRESS } from "../../DLaRS";
+import {
+  registerLandHelper,
+  viewLandDetailsHelper,
+  computeIdLandHelper,
+  viewAuctionDetailsHelper,
+} from "../../Web3Helpers";
+
+let isInitialized = false;
+let accounts;
+let dlarsObj;
+
+async function intialize() {
+  console.log("In loadBlockainFirst");
+  const web3 = new Web3(Web3.givenProvider || "http://127.0.0.1:7545");
+  await window.ethereum.enable();
+  accounts = await web3.eth.getAccounts();
+  console.log(accounts[0]);
+  dlarsObj = new web3.eth.Contract(DLaRS_ABI, DLaRS_ADDRESS, {
+    from: accounts[0],
+  });
+  isInitialized = true;
+}
+
+async function executionHandler(innerText, formDetails) {
+  if (!isInitialized) {
+    await intialize();
+  }
+  switch (innerText) {
+    case "Register Land":
+      await registerLandHelper(dlarsObj, accounts, formDetails);
+      break;
+    case "View Land Details":
+      await viewLandDetailsHelper(dlarsObj, accounts, formDetails);
+      break;
+    case "Compute Id Land":
+      await computeIdLandHelper(dlarsObj, accounts, formDetails);
+      break;
+    case "View Auction Details":
+      await viewAuctionDetailsHelper(dlarsObj, accounts, formDetails);
+      break;
+    default:
+      return "None";
+  }
+}
 
 const InnerForm = ({ inputArray, innerText, id }) => {
   console.log("this is passed id ", id);
@@ -22,9 +68,12 @@ const InnerForm = ({ inputArray, innerText, id }) => {
 
   // submitHandler
   const submitHandler = (e) => {
+    console.log("submitHandler");
     setIsError(false);
     e.preventDefault();
     setShowOutput(true);
+    intialize();
+    executionHandler(innerText, formDetails);
     setOuptutString([<Box>id : {id} </Box>, <Box>Hello world</Box>]);
   };
 
