@@ -8,7 +8,7 @@ import InnerForm from "../common/InnerForm";
 import { useNavigate } from "react-router-dom";
 
 const Bidder = () => {
-  const placeBid = ["landId"];
+  const placeBid = ["landId", "bidValue"];
   const terminateAuction = ["landId"];
 
   const [id, setId] = useState("");

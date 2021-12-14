@@ -10,6 +10,12 @@ import {
   viewLandDetailsHelper,
   computeIdLandHelper,
   viewAuctionDetailsHelper,
+  putForAuctionHelper, 
+  deleteFromAuctionHelper, 
+  updateAuctionDetailsHelper, 
+  acceptHighestBidHelper, 
+  terminateAuctionHelper,
+  placeBidHelper
 } from "../../Web3Helpers";
 
 let isInitialized = false;
@@ -44,6 +50,24 @@ async function executionHandler(innerText, formDetails) {
       break;
     case "View Auction Details":
       await viewAuctionDetailsHelper(dlarsObj, accounts, formDetails);
+      break;
+    case "Put For Auction":
+      await putForAuctionHelper(dlarsObj, accounts, formDetails);
+      break;
+    case "Delete From Auction":
+      await deleteFromAuctionHelper(dlarsObj, accounts, formDetails);
+      break;
+    case "Update Auction Details":
+      await updateAuctionDetailsHelper(dlarsObj, accounts, formDetails);
+      break;
+    case "Accept Highest Bid":
+      await acceptHighestBidHelper(dlarsObj, accounts, formDetails);
+      break;
+    case "Terminate Auction":
+      await terminateAuctionHelper(dlarsObj, accounts, formDetails);
+      break;
+    case "Place Bid":
+      await placeBidHelper(dlarsObj, accounts, formDetails);
       break;
     default:
       return "None";

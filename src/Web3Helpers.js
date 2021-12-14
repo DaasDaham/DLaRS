@@ -58,10 +58,69 @@ async function viewAuctionDetailsHelper(dlarsObj, accounts, formDetails) {
     });
   console.log(fetchStatus);
 }
-
+async function putForAuctionHelper(dlarsObj, accounts, formDetails) {
+  const fetchStatus = await dlarsObj.methods
+    .putUpForAuction(formDetails.landId, formDetails.askingPrice, formDetails.minBidInterval)
+    .call({ from: accounts[0] })
+    .then(function (result) {
+      console.log(result);
+    });
+  console.log(fetchStatus);
+}
+async function deleteFromAuctionHelper(dlarsObj, accounts, formDetails) {
+  const fetchStatus = await dlarsObj.methods
+    .deleteFromAuction(formDetails.landId)
+    .call({ from: accounts[0] })
+    .then(function (result) {
+      console.log(result);
+    });
+  console.log(fetchStatus);
+}
+async function updateAuctionDetailsHelper(dlarsObj, accounts, formDetails) {
+  const fetchStatus = await dlarsObj.methods
+    .updateAuctionDetails(formDetails.landId, formDetails.newAskingPrice, formDetails.newMinBidInterval)
+    .call({ from: accounts[0] })
+    .then(function (result) {
+      console.log(result);
+    });
+  console.log(fetchStatus);
+}
+async function acceptHighestBidHelper(dlarsObj, accounts, formDetails) {
+  const fetchStatus = await dlarsObj.methods
+    .acceptHighestBid(formDetails.landId)
+    .call({ from: accounts[0] })
+    .then(function (result) {
+      console.log(result);
+    });
+  console.log(fetchStatus);
+}
+async function terminateAuctionHelper(dlarsObj, accounts, formDetails) {
+  const fetchStatus = await dlarsObj.methods
+    .terminateAuction(formDetails.landId)
+    .call({ from: accounts[0] })
+    .then(function (result) {
+      console.log(result);
+    });
+  console.log(fetchStatus);
+}
+async function placeBidHelper(dlarsObj, accounts, formDetails) {
+  const fetchStatus = await dlarsObj.methods
+    .placeBid(formDetails.landId, {from : accounts[0], value : formDetails.bidValue})
+    .call({ from: accounts[0] })
+    .then(function (result) {
+      console.log(result);
+    });
+  console.log(fetchStatus);
+}
 module.exports = {
   registerLandHelper: registerLandHelper,
   viewLandDetailsHelper: viewLandDetailsHelper,
   computeIdLandHelper: computeIdLandHelper,
   viewAuctionDetailsHelper: viewAuctionDetailsHelper,
+  putForAuctionHelper : putForAuctionHelper,
+  deleteFromAuctionHelper : deleteFromAuctionHelper,
+  terminateAuctionHelper : terminateAuctionHelper,
+  acceptHighestBidHelper : acceptHighestBidHelper,
+  placeBidHelper : placeBidHelper,
+  updateAuctionDetailsHelper : updateAuctionDetailsHelper
 };
