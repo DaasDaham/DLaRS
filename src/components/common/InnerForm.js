@@ -53,8 +53,21 @@ async function executionHandler(innerText, formDetails, setOutputString) {
         accounts,
         formDetails
       );
+      let registeredStatus;
+      if (landDetails[4] == 0) {
+        registeredStatus = "Under Bidding";
+      } else {
+        registeredStatus = "Registered";
+      }
       console.log("land Details");
       console.log(landDetails);
+      setOutputString([
+        <Box>Land Address : {landDetails[2]} </Box>,
+        <Box>City : {landDetails[0]} </Box>,
+        <Box>Country : {landDetails[1]} </Box>,
+        <Box>PinCode : {landDetails[3]} </Box>,
+        <Box>Status : {registeredStatus} </Box>,
+      ]);
       break;
     case "Compute Id Land":
       await computeIdLandHelper(dlarsObj, accounts, formDetails);
@@ -68,6 +81,12 @@ async function executionHandler(innerText, formDetails, setOutputString) {
       );
       console.log("AUC Details");
       console.log(aucDetails);
+      setOutputString([
+        <Box>Highest Bid : {aucDetails[0]} </Box>,
+        <Box>Initial Asking Price (Wei) : {aucDetails[1]} </Box>,
+        <Box>Last Bid's Timestamp : {aucDetails[2]} </Box>,
+      ]);
+
       break;
     case "Put For Auction":
       //Done
@@ -121,7 +140,6 @@ const InnerForm = ({ inputArray, innerText, id }) => {
     setShowOutput(true);
     intialize();
     executionHandler(innerText, formDetails, setOuptutString);
-    setOuptutString([<Box>id : {id} </Box>, <Box>Hello world</Box>]);
   };
 
   // clickHandler
@@ -183,7 +201,7 @@ const InnerForm = ({ inputArray, innerText, id }) => {
           {isError ? (
             <Box>Error Occured</Box>
           ) : (
-            <Box>`Transaction Successful!!! ${outputString}`</Box>
+            <Box>Transaction Successful! {outputString}</Box>
           )}
         </Alert>
       )}

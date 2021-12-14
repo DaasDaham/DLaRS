@@ -25,7 +25,8 @@ const styles = {
     typography: "h6",
     position: "absolute",
     bottom: "10px",
-    left: "45%",
+    left: "33%",
+    textAlign: "center",
   },
   // using style
   btn: {
