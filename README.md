@@ -23,4 +23,4 @@ Contracts are placed in contract folder
 
 Frontend files are present in src along with the compiled ABI.
 
-# Team Members: Aman Aggarwal, Prasham Narayan and Saad Ahmad
+#### Team Members: Aman Aggarwal, Prasham Narayan and Saad Ahmad
