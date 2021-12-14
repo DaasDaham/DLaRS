@@ -50,7 +50,7 @@ const HomePage = () => {
         <img style={{ height: "60px" }} src={logo1} />
         <img style={{ height: "60px" }} src={logo2} />
       </Box>
-      <Box sx={styles.footer}>Made by Team &copy;</Box>
+      <Box sx={styles.footer}>Made by Aman Aggarwal, Prasham Narayan, Saad Ahmad &copy;</Box>
     </Box>
   );
 };
